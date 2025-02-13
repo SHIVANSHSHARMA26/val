@@ -2,9 +2,16 @@
 <html>
 <head>
     <title>To Someone Special</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap');
         
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: linear-gradient(45deg, #ff4f7b, #ff758c);
             font-family: 'Playfair Display', serif;
@@ -12,49 +19,119 @@
             color: #fff;
             margin: 0;
             overflow: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #ff4f7b, #ff758c, #ff4f7b);
+            background-size: 200% 200%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
         }
 
         .container {
             position: relative;
             padding: 5rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Floating hearts animation */
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: float 6s ease-in infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
         }
 
         h1 {
             font-family: 'Great Vibes', cursive;
-            font-size: 3.8rem;
+            font-size: clamp(2.5rem, 8vw, 3.8rem);
             color: #fff;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            animation: fadeInDown 1.5s ease-out;
         }
 
         .message {
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
             margin: 2rem 0;
             color: #ffe0e9;
+            animation: fadeIn 2s ease-out;
         }
 
         .signature {
-            font-size: 1.5rem;
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
             font-style: italic;
             margin-bottom: 2rem;
             color: #ffd1dc;
+            animation: fadeIn 2.5s ease-out;
         }
 
         .btn {
             text-decoration: none;
             background: linear-gradient(45deg, #ff4f7b, #ff7eb3);
             color: white;
-            padding: 1.2rem 2.5rem;
+            padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1.5rem, 4vw, 2.5rem);
             border-radius: 50px;
-            font-size: 1.4rem;
+            font-size: clamp(1rem, 3vw, 1.4rem);
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: bounce 1s infinite;
+            animation-delay: 3s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .btn:hover {
             transform: scale(1.05);
             background: linear-gradient(45deg, #ff7eb3, #ff4f7b);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            animation: none;
         }
 
         .modal {
@@ -77,11 +154,18 @@
             background: rgba(255, 240, 245, 0.95);
             padding: 2rem;
             border-radius: 20px;
+            width: 90%;
             max-width: 500px;
             text-align: center;
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
             animation: scaleIn 0.5s ease-out;
             color: #ff4f7b;
+        }
+
+        .modal-content p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
         }
 
         .close-btn {
@@ -93,21 +177,50 @@
             transition: all 0.3s ease;
             border: none;
             margin-top: 1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
         }
 
         .close-btn:hover {
             background: #ff6f91;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
         }
     </style>
 </head>
 <body>
+    <div class="hearts"></div>
     <div class="container">
         <h1>To Someone Special ✨</h1>
         <div class="message">Wishing you happiness and smiles! 😊</div>
         <div class="signature">Your Friend, Shivansh</div>
         <a href="#" class="btn" onclick="showMessage(event)">Open Your Gift 🎁</a>
     </div>
-
     <div id="giftModal" class="modal">
         <div class="modal-content">
             <p>🌸 Dear Friend 🌸<br><br>
@@ -119,8 +232,27 @@
             <button class="close-btn" onclick="closeModal()">Close 😊</button>
         </div>
     </div>
-
     <script>
+        // Create floating hearts
+        function createHearts() {
+            const hearts = document.querySelector('.hearts');
+            const heartSymbols = ['❤️', '💖', '💝', '💕', '💗'];
+            
+            setInterval(() => {
+                const heart = document.createElement('span');
+                heart.className = 'heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                hearts.appendChild(heart);
+                
+                // Remove heart after animation
+                setTimeout(() => {
+                    heart.remove();
+                }, 6000);
+            }, 300);
+        }
+
         function showMessage(event) {
             event.preventDefault();
             document.getElementById('giftModal').style.display = 'block';
@@ -129,6 +261,9 @@
         function closeModal() {
             document.getElementById('giftModal').style.display = 'none';
         }
+
+        // Start creating hearts when page loads
+        window.onload = createHearts;
     </script>
 </body>
 </html>
